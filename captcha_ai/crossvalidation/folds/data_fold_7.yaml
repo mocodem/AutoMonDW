@@ -1,0 +1,7 @@
+{names: ['0', '1', '2', c], nc: 4, train: [/Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_0/images/,
+    /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_1/images/, /Users/mo/Desktop/MSc
+      thesis/ai/crossvalidation/data/fold_2/images/, /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_3/images/,
+    /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_4/images/, /Users/mo/Desktop/MSc
+      thesis/ai/crossvalidation/data/fold_5/images/, /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_6/images/,
+    /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_8/images/, /Users/mo/Desktop/MSc
+      thesis/ai/crossvalidation/data/fold_9/images/], val: /Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_7/images/}

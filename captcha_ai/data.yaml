@@ -1,0 +1,13 @@
+train: /Users/mo/Desktop/MSc thesis/ai/data/train/images
+val: /Users/mo/Desktop/MSc thesis/ai/data/valid/images
+test: /Users/mo/Desktop/MSc thesis/ai/data/test/images
+
+nc: 4
+names: ['0', '1', '2', 'c']
+
+roboflow:
+  workspace: abu-mariam-uhfcl
+  project: c-q996n
+  version: 19
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/abu-mariam-uhfcl/c-q996n/dataset/19
