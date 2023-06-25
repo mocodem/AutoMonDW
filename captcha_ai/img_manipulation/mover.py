@@ -5,6 +5,8 @@ import os
 # images = sorted(images)
 # labels = sorted(labels)
 
+# This file is used to move all files to set up 
+
 _, _, files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/valid/"))
 
 print("starting to move files")

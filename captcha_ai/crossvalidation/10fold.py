@@ -10,12 +10,15 @@ from ultralytics import YOLO
 num_folds = 10
 
 def gather():
+    # Gather image and label file paths for test, train, and valid datasets
     _, _, test_img_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/test/images"))
     _, _, test_label_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/test/labels"))
     _, _, train_img_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/train/images"))
     _, _, train_label_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/train/labels"))
     _, _, valid_img_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/valid/images"))
     _, _, valid_label_files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/data/valid/labels"))
+
+    # Create file paths for image and label files
     test_img_files = ["/Users/mo/Desktop/MSc thesis/ai/data/test/images/" + file_name for file_name in test_img_files]
     test_label_files = ["/Users/mo/Desktop/MSc thesis/ai/data/test/labels/" + file_name for file_name in test_label_files]
     train_img_files = ["/Users/mo/Desktop/MSc thesis/ai/data/train/images/" + file_name for file_name in train_img_files]
@@ -26,17 +29,23 @@ def gather():
     # print(len(test_img_files) == len(test_label_files))
     # print(len(train_img_files) == len(train_label_files))
     # print(len(valid_img_files) == len(valid_label_files))
+
+    # Verify that the number of image files matches the number of label files
     all_img = test_img_files + train_img_files + valid_img_files
     all_label = test_label_files + train_label_files + valid_label_files
     all_img.sort()
     all_label.sort()
     print("collected all images and labels:", len(all_img)==len(all_label)) # 12043
+
+    # Create indexes for data folding
     index = list(range(0, len(all_img)))
     shuffle(index)
     k, m = divmod(len(index), num_folds)
     index_folds = list((index[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(num_folds)))
     print("created indexes of",len(index_folds),"folds")
     input("sure to proceed moving all files? ")
+
+    # Move images and labels into fold directories
     for fold in range(num_folds):
         print("moving images and labels into fold:",fold)
         img_dir = f'/Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_{fold}/images/'
@@ -49,6 +58,7 @@ def gather():
     print("created 10 directories for each fold with all data")
 
 def create_yaml():
+    # Generate a YAML file for each fold
     for fold in range(num_folds):
         all_folds = [f"/Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/fold_{fold2}/images/" if fold2 != fold else None for fold2 in range(10)]
         all_folds.remove(None)
@@ -99,6 +109,3 @@ def train_model():
         print("------------- iteration:",i,"-------------")
         model.train(data=f'/Users/mo/Desktop/MSc thesis/ai/crossvalidation/data/data_fold_{i}.yaml', epochs=1)
         print("------------- done:",i,"-------------")
-
-
-create_yaml_colab()

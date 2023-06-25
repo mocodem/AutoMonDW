@@ -1,4 +1,4 @@
-
+import time
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 from selenium import webdriver
@@ -25,6 +25,9 @@ proxy = Proxy({
 """
 options = Options()
 options.proxy = proxy
+
+# initiate driver to spawn browser
+
 # macos
 binary = "/Applications/Tor Browser.app/Contents/MacOS/firefox"
 options.binary_location = binary
@@ -36,13 +39,27 @@ driver = webdriver.Firefox(options=options)
 # driver = webdriver.Firefox(firefox_binary=firefox_binary, options=options)
 
 
-def run(onion: str):
-
-    url = 'https://www.google.com/'
-    url = 'https://icanhazip.com'  # it shows your IP
-    # url = 'https://httpbin.org/get'  # it shows your IP and headers/cookies
+def run(onion: str, cookies = None):
+    # add cookies if needed
+    if cookies:
+        for cookie in cookies:
+            driver.add_cookie(cookie)
     try:
+        # request target
         driver.get(onion)
         return 200
     except:
         return 0
+
+
+def get_cookies(onion: str):
+    print("sleeping 10 sec")
+    time.sleep(10)
+    driver.get(onion)
+    input("solve captcha: ")
+    all_cookies=driver.get_cookies();
+    cookies_dict = {}
+    for cookie in all_cookies:
+        cookies_dict[cookie['name']] = cookie['value']
+    print(cookies_dict)
+    return cookies_dict

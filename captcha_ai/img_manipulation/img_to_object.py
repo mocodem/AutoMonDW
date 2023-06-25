@@ -5,12 +5,14 @@ from PIL import Image, ImageDraw
 import random
 import pybboxes as pbx
 
+# Define the dictionary for object types and their corresponding folders
 obj_dict = {
     1: {'folder': "images"},
     2: {'folder': "background"},
 }
 
 def yolocrop():
+    # Perform YOLO cropping on images based on YOLO bounding box annotations
     _, _, files = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/second/images"))
     for file in files:
         name = file[:-4]
@@ -18,20 +20,14 @@ def yolocrop():
         f = open(f"/Users/mo/Desktop/MSc thesis/ai/second/labels/{name}.txt", "r")
         labels = f.read().split(" ")[1:]
         labels = [float(i) for i in labels]
-        # print(labels)
         yolo_bbox1 = (labels[0], labels[1], labels[2], labels[3])
         W, H = img.size
         bbox = pbx.convert_bbox(yolo_bbox1, from_type="yolo", to_type="voc", image_size=(W, H))
-        print(pbx.convert_bbox(bbox, from_type="voc", to_type="yolo", image_size=(W, H)))
-        # print(pbx.convert_bbox(yolo_bbox1, from_type="yolo", to_type="voc", image_size=(W, H)))
-        # img1 = ImageDraw.Draw(img)
-        # img1.rectangle([(bbox[0], bbox[1]), (bbox[2], bbox[3])], fill="#ffff33", outline="red")
-        # img.show()
         img2 = img.crop(bbox)
         img2.save(f"/Users/mo/Desktop/MSc thesis/ai/second/reduced/{name}_reduced.png")
 
-
 def load(obj_dict, PATH_MAIN: str = ""):
+    # Load images from folders specified in the object dictionary
     for k, _ in obj_dict.items():
         folder_name = obj_dict[k]['folder']
         files_imgs = sorted(os.listdir(os.path.join(PATH_MAIN, folder_name)))
@@ -41,6 +37,7 @@ def load(obj_dict, PATH_MAIN: str = ""):
     return obj_dict
 
 def generate():
+    # Generate manipulated images by pasting reduced images onto random backgrounds
     _, _, reduced_images = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/second/reduced"))
     _, _, backgrounds = next(os.walk("/Users/mo/Desktop/MSc thesis/ai/captcha_manipulation/background"))
     for idx, img_name in enumerate(reduced_images):
@@ -68,10 +65,8 @@ def generate():
                 print(f"{img_name} with {background_name} -> {name}")
                 background.save("/Users/mo/Desktop/MSc thesis/ai/second/manipulated/images/" + name + ".png")
                 with open(f"/Users/mo/Desktop/MSc thesis/ai/second/manipulated/labels/{name}.txt", "w") as f:
-                    # print(f'0 {str(pbx.convert_bbox(bbox, from_type="voc", to_type="yolo", image_size=(b_x, b_y))).replace(",", "").replace("(", "").replace(")","")}')
                     f.write(f'{c_type} {str(pbx.convert_bbox(bbox, from_type="voc", to_type="yolo", image_size=(b_x, b_y))).replace(",", "").replace("(", "").replace(")","")}')
             except:
                 pass
 
 generate()
-# yolocrop()

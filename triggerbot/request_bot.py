@@ -16,5 +16,6 @@ proxies = {
     'https': 'socks5h://127.0.0.1:9050'
 }
 """
-def run(onion: str):
-    return requests.get(onion, proxies=proxies).status_code
+def run(onion: str, cookies = None):
+    # request target
+    return requests.get(onion, proxies=proxies, cookies = cookies).status_code

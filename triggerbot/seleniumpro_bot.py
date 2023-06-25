@@ -9,12 +9,19 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 options = webdriver.ChromeOptions()
 options.add_argument("--tor")
+# initiate driver to spawn browser
+
 # linux
 # driver = uc.Chrome(version_main=113, browser_executable_path='/usr/bin/brave-browser', options=options)
 # macos
 driver = uc.Chrome(version_main=113, browser_executable_path='/Applications/Brave Browser.app/Contents/MacOS/Brave Browser', options=options)
-def run(onion: str):
+def run(onion: str, cookies = None):
+    # add cookies if needed
+    if cookies:
+        for cookie in cookies:
+            driver.add_cookie(cookie)
     try:
+        # request target
         driver.get(onion)
         try:
             WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='proceed-button']"))).click()
